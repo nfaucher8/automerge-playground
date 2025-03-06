@@ -1,17 +1,33 @@
 <script setup lang="ts">
+import { Repo } from "@automerge/automerge-repo"
 import HelloWorld from './components/HelloWorld.vue'
-</script>
+import {ref} from "vue";
 
+export interface State {
+  counter: number;
+}
+
+const repo = new Repo({ /* repo config */ })
+const state = ref({ counter: 0 })
+
+const handle = repo.create(state.value)
+
+console.log(repo)
+console.log(handle)
+
+const add = () => {
+  console.log("document change requested: Add")
+  handle.change(document => {
+    document.counter++;
+    state.value = document;
+  })
+}
+</script>
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    {{state}}
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld msg="Vite + Vue" :add="add" :state="state" />
 </template>
 
 <style scoped>

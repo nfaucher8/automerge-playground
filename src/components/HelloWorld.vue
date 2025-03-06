@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import type { State } from "../App.vue";
 
-defineProps<{ msg: string }>()
+interface Props {
+  msg: string
+  add: () => void
+  state: State
+}
 
-const count = ref(0)
+defineProps<Props>()
 </script>
 
 <template>
   <h1>{{ msg }}</h1>
 
   <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
+    <button type="button" @click="add">count is {{ state.counter }}</button>
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
